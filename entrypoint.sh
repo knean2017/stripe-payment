@@ -2,6 +2,7 @@
 set -e
 
 echo "Running database migrations..."
+python manage.py makemigrations --noinput
 python manage.py migrate --noinput
 
 echo "Collecting static files..."
@@ -18,6 +19,6 @@ else:
     print("Superuser 'admin' already exists.")
 EOF
 
-echo "Starting Gunicorn..."
-exec gunicorn proj.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --threads 2
+echo "Starting Django development server on port ${PORT:-8000}..."
+exec python manage.py runserver 0.0.0.0:${PORT:-8000}
 
